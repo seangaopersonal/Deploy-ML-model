@@ -21,7 +21,7 @@ app = FastAPI()
 
 rf_model_path = "model/rf_model.pkl"
 encoder_path = "model/encoder.pkl"
-lb_path = "labelbinarizer.pkl"
+lb_path = "model/labelbinarizer.pkl"
 
 with open(rf_model_path, 'rb') as f:
     rf_model = pickle.load(f)
