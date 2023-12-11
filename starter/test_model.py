@@ -60,7 +60,7 @@ def test_compute_model_metrics(model):
     assert isinstance(precision, float)
 
 
-def test_inference(model, X_train):
+def test_inference(model):
 
     """ Test the data split """
 
