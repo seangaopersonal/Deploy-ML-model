@@ -4,8 +4,8 @@ This module includes unit tests for the ML model
 """
 from sklearn.model_selection import train_test_split
 import logging 
-from ml.model import train_model, compute_model_metrics, inference
-from ml.data import process_data
+from starter.ml.model import train_model, compute_model_metrics, inference
+from starter.ml.data import process_data
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
