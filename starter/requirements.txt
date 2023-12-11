@@ -2,7 +2,7 @@
 numpy
 pandas
 scikit-learn
-sklearn
+# sklearn
 pytest
 requests
 fastapi==0.63.0
