@@ -76,7 +76,7 @@ async def predict(data: InputData):
         "age": input.age,
         "workclass" : input.workclass,
         "fnlwgt":  input.fnlgt,
-        "education": input.education
+        "education": input.education,
         "education_num": input.education_num,
         "marital-status": input.marital_status,
         "occupation":  input.occupation,
