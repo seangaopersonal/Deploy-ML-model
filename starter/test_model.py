@@ -56,8 +56,10 @@ def test_compute_model_metrics(model):
 
     """ Check model type """
 
-    precision, _, _ = compute_model_metrics(y_train, inference(model, X_train))
+    precision, recall, fbeta  = compute_model_metrics(y_train, inference(model, X_train))
     assert isinstance(precision, float)
+    assert isinstance(recall, float)
+    assert isinstance(fbeta, float)
 
 
 def test_inference(model):
@@ -66,3 +68,10 @@ def test_inference(model):
 
     y_pred = inference(model, X_train)
     assert y_pred.shape[0] == y_train.shape[0]
+
+def test_inference_2(model):
+
+    """ Test the data split """
+
+    y_pred = inference(model, X_train)
+    assert y_pred in [0,1]
