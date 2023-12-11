@@ -1,7 +1,3 @@
-"""
-Test heroku connection using sample json input
-- example comes from Udacity exercise
-"""
 import requests
 import logging
 
@@ -26,7 +22,7 @@ features = {
 }
 
 
-app_url = "https://income-prediction-ml-app.herokuapp.com/predict-income"
+app_url = "https://udacity-fhjr.onrender.com/predict-income-class"
 
 r = requests.post(app_url, json=features)
 assert r.status_code == 200
