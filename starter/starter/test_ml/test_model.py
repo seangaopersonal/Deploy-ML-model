@@ -1,20 +1,18 @@
-# Script to train machine learning model.
+"""
+This module includes unit tests for the ML model
 
+"""
 from sklearn.model_selection import train_test_split
 import logging 
 from ml.model import train_model, compute_model_metrics, inference
 from ml.data import process_data
 from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
-import pickle
-
-# Add the necessary imports for the starter code.
-
+import pytest 
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
-# Add code to load in the data.
-logging.info("loading the cleaned census data")
 df_input = pd.read_csv("/Users/seangao/Desktop/Deploy-ML-model/starter/data/census_cleaned.csv", header = 0)
 
 
@@ -34,20 +32,38 @@ cat_features = [
 X_train, y_train, encoder, lb = process_data(
     train, categorical_features=cat_features, label="salary", training=True
 )
-
 X_test, y_test, _, _ = process_data(
     test, categorical_features=cat_features, label="salary",
      training=False, encoder=encoder, lb=lb)
 
-logging.info("Starting model training")
-rf_model = train_model(X_train, y_train)
 
-logging.info("Saving artifacts")
-pickle.dump(rf_model, open("/Users/seangao/Desktop/Deploy-ML-model/starter/model/rf_model.pkl", 'wb'))
-pickle.dump(encoder, open("/Users/seangao/Desktop/Deploy-ML-model/starter/model/encoder.pkl", 'wb'))
-pickle.dump(lb, open("/Users/seangao/Desktop/Deploy-ML-model/starter/model/labelbinarizer.pkl", 'wb'))
+@pytest.fixture(scope="module")
+def model():
+    # code to load in the data.
+    rf_model = train_model(X_train, y_train)
+    return rf_model
 
-logging.info("Calculating test set model metrics")
-y_pred = inference(rf_model, X_test)
-precision, recall, fbeta = compute_model_metrics(y_test, y_pred)
-logging.info(f"Model metrics output - Precision score: {precision}. Recall: {recall}. Fbeta: {fbeta}")
+
+
+def test_train_model( ):
+    
+    """ Check training model to return rf classifier """
+    rf_model = train_model(X_train, y_train)
+
+    assert isinstance(rf_model, RandomForestClassifier)
+
+
+def test_compute_model_metrics(model):
+
+    """ Check model type """
+
+    precision, _, _ = compute_model_metrics(y_train, inference(model, X_train))
+    assert isinstance(precision, float)
+
+
+def test_inference(model, X_train):
+
+    """ Test the data split """
+
+    y_pred = inference(model, X_train)
+    assert y_pred.shape[0] == y_train.shape[0]
