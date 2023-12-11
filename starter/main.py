@@ -3,7 +3,6 @@ from fastapi import FastAPI
 import uvicorn
 from pydantic import BaseModel
 import pickle
-import os
 from starter.ml.data import *
 from starter.ml.model import *
 import pandas as pd
@@ -66,46 +65,43 @@ class InputData(BaseModel):
 
 @app.get('/')
 async def welcome():
-    return "Welcome to RF model API"
+    return "Welcome to Sean Gao RF model API"
 
 
 @app.post('/predict-income-class')
 async def predict(data: InputData):
 
     # iterate through input data entry to create the respective datafrmae
-    data_input = np.array([[
-        input.age,
-        input.workclass,
-        input.fnlgt,
-        input.education,
-        input.education_num,
-        input.marital_status,
-        input.occupation,
-        input.relationship,
-        input.race,
-        input.sex,
-        input.capital_gain,
-        input.capital_loss,
-        input.hours_per_week,
-        input.native_country]])
+    data_input_dict = {
+        "age": input.age,
+        "workclass" : input.workclass,
+        "fnlwgt":  input.fnlgt,
+        "education": input.education
+        "education_num": input.education_num,
+        "marital-status": input.marital_status,
+        "occupation":  input.occupation,
+        "relationship": input.relationship,
+        "race": input.race,
+        "sex": input.sex,
+        "capital_gain": input.capital_gain,
+        "capital_loss": input.capital_loss,
+        "hours-per-week": input.hours_per_week,
+        "native-country": input.native_country}
+    final_dict = {}
+    for key,val in data_input_dict.items():
+        final_dict[key] = [val]
+        cat_features = [
+                    "workclass",
+                    "education",
+                    "marital-status",
+                    "occupation",
+                    "relationship",
+                    "race",
+                    "sex",
+                    "native-country",
+                    ]
 
-    feature_col = [
-        "age",
-        "workclass",
-        "fnlwgt",
-        "education",
-        "education_num",
-        "marital-status",
-        "occupation",
-        "relationship",
-        "race",
-        "sex",
-        "capital_gain",
-        "capital_loss",
-        "hours-per-week",
-        "native-country"]
-
-    df_input = pd.DataFrame(data_input, columns = feature_col)
+    df_input = pd.DataFrame.from_dict(final_dict)
     X, _, _, _ = process_data(
         df_input,
         categorical_features=cat_features,
@@ -114,13 +110,9 @@ async def predict(data: InputData):
         encoder=encoder,
         lb=lb
     )
-    output = inference(model=model, X=X)[0]
-    str_out = '<=50K' if output == 0 else '>50K'
-    return {"pred": str_out}
+    y_pred = inference(model=rf_model, X=X)[0]
+    return {"income_prediction": '<=50K' if y_pred == 0 else '>50K'}
 
 
 if __name__ == '__main__':
-    config = uvicorn.config("main:app", host="0.0.0.0",
-                            reload=True, port=8080, log_level="info")
-    server = uvicorn.Server(config)
-    server.run()
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
