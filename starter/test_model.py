@@ -4,8 +4,8 @@ This module includes unit tests for the ML model
 """
 from sklearn.model_selection import train_test_split
 import logging 
-from starter.ml.model import train_model, compute_model_metrics, inference
-from starter.ml.data import process_data
+from .starter.ml.model import train_model, compute_model_metrics, inference
+from .starter.ml.data import process_data
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
@@ -13,7 +13,7 @@ import pytest
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
-df_input = pd.read_csv("/Users/seangao/Desktop/Deploy-ML-model/starter/data/census_cleaned.csv", header = 0)
+df_input = pd.read_csv("/starter/data/census_cleaned.csv", header = 0)
 
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
