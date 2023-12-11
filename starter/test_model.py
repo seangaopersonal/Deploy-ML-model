@@ -15,36 +15,18 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
 
 temp = {
-    'age':[4,50],
-    'workclass':"Private", 
-    'fnlgt':234721,
-    'education':"Doctorate",
-    'education_num':16,
-    'marital_status':"Separated",
-    'occupation':"Exec-managerial",
-    'relationship':"Not-in-family",
-    'race':"Black",
-    'sex':"Female",
-    'capital_gain':0,
-    'capital_loss':0,
-    'hours_per_week':50,
-    'native_country':"United-States"
+    'age':[4,50,500],
+    'workclass':["A","B","A"], 
+    'salary':[1,0,1]
 }
 
-df_input = pd.read_csv("temp_file.csv", header = 0)
+df_input = pd.DataFrame.from_dict(temp)
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
-train, test = train_test_split(df_input, test_size=0.20)
+train, test = train_test_split(df_input, test_size=0.50)
 
 cat_features = [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
+    "workclass"
 ]
 X_train, y_train, encoder, lb = process_data(
     train, categorical_features=cat_features, label="salary", training=True
