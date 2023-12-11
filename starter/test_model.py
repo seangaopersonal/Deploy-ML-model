@@ -13,7 +13,7 @@ import pytest
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)-15s %(message)s")
 
-df_input = pd.read_csv("data/census_cleaned.csv", header = 0)
+df_input = pd.read_csv("temp_file.csv", header = 0)
 
 
 # Optional enhancement, use K-fold cross validation instead of a train-test split.
