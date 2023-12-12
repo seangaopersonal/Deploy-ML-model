@@ -27,5 +27,5 @@ app_url = "https://udacity-fhjr.onrender.com/predict-income-class"
 r = requests.post(app_url, json=features)
 assert r.status_code == 200
 
-logging.info("Test Heroku app using sample input")
+logging.info("Test Render app using sample input")
 logging.info(f"Prediction output: {r.json()}")
